@@ -1,6 +1,10 @@
 # Build stage
 FROM golang:1.22.4-alpine AS builder
 
+# Build arguments for multi-platform support
+ARG TARGETOS
+ARG TARGETARCH
+
 WORKDIR /build
 
 # Copy go mod files
@@ -11,7 +15,7 @@ RUN go mod download
 COPY . .
 
 # Build the binary
-RUN CGO_ENABLED=0 GOOS=linux go build -a -installsuffix cgo -o dnsupdater ./cmd/dnsupdater
+RUN CGO_ENABLED=0 GOOS=${TARGETOS} GOARCH=${TARGETARCH} go build -a -installsuffix cgo -o dnsupdater ./cmd/dnsupdater
 
 # Runtime stage
 FROM alpine:latest
