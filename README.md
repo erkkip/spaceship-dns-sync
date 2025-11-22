@@ -52,6 +52,55 @@ WantedBy=multi-user.target
 
 Pair it with a timer if you prefer scheduled invocations instead of a long-running process. Logs are emitted to stdout for easy collection.
 
+## Docker
+
+### Building Locally
+
+Build the Docker image:
+
+```bash
+docker build -t dnsupdater:latest .
+```
+
+Run the container:
+
+```bash
+docker run -d \
+  --name dnsupdater \
+  --restart unless-stopped \
+  --env-file .env \
+  -v $(pwd)/state:/app/state \
+  dnsupdater:latest
+```
+
+### Using Pre-built Images
+
+Pre-built images are available on GitHub Container Registry. Pull the latest image:
+
+```bash
+docker pull ghcr.io/erkkip/spaceship-dns-sync:latest
+```
+
+### Docker Compose
+
+For easier deployment, use the provided `docker-compose.example.yml`:
+
+1. Copy the example file:
+   ```bash
+   cp docker-compose.example.yml docker-compose.yml
+   ```
+
+2. Ensure your `.env` file is in the same directory with the required configuration.
+
+3. Start the service:
+   ```bash
+   docker-compose up -d
+   ```
+
+The `state/` directory will be mounted as a volume to persist the last known IP address across container restarts.
+
+**Important**: The `state/` directory must exist on the host and be writable. The container runs as a non-root user (UID 1000) for security.
+
 ## Development
 
 - `go test ./...`

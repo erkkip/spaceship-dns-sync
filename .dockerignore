@@ -1,0 +1,53 @@
+# Binaries
+dnsupdater
+*.exe
+*.exe~
+*.dll
+*.so
+*.dylib
+
+# Test binary, built with `go test -c`
+*.test
+
+# Output of the go coverage tool
+*.out
+
+# Dependency directories
+vendor/
+
+# Go workspace file
+go.work
+
+# IDE files
+.idea/
+.vscode/
+*.swp
+*.swo
+*~
+
+# Git
+.git
+.gitignore
+.gitattributes
+
+# State files
+state/
+*.log
+
+# Documentation
+*.md
+!README.md
+
+# CI/CD
+.github/
+
+# Docker files
+Dockerfile
+.dockerignore
+docker-compose*.yml
+
+# Environment files
+.env
+.env.local
+.env.*.local
+
