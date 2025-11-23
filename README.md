@@ -9,7 +9,7 @@ Create a `.env` file or set environment variables:
 ```
 SPACESHIP_API_KEY=your-key
 SPACESHIP_API_SECRET=your-secret
-SPACESHIP_BASE_URL=https://spaceship.dev/api/v1
+SPACESHIP_BASE_URL=https://spaceship.dev/api
 POLL_INTERVAL_HOURS=24
 IP_ENDPOINTS=https://api.ipify.org,https://ifconfig.me
 DRY_RUN=false

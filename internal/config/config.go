@@ -10,7 +10,7 @@ import (
 
 const (
 	defaultPollInterval = 24 * time.Hour
-	defaultBaseURL      = "https://spaceship.dev/api/v1"
+	defaultBaseURL      = "https://spaceship.dev/api"
 )
 
 // Config holds runtime configuration for the updater.
