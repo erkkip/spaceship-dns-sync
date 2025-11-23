@@ -10,7 +10,6 @@ import (
 
 const (
 	defaultPollInterval = 24 * time.Hour
-	defaultCachePath    = "state/last_ip"
 	defaultBaseURL      = "https://spaceship.dev/api/v1"
 )
 
@@ -20,7 +19,6 @@ type Config struct {
 	APISecret        string
 	BaseURL          string
 	PollInterval     time.Duration
-	CachePath        string
 	IPCheckEndpoints []string
 	DryRun           bool
 	MockIP           string
@@ -30,7 +28,6 @@ type Config struct {
 func Load() (Config, error) {
 	cfg := Config{
 		BaseURL:          getEnv("SPACESHIP_BASE_URL", defaultBaseURL),
-		CachePath:        getEnv("CACHE_PATH", defaultCachePath),
 		IPCheckEndpoints: defaultIPEndpoints(),
 	}
 

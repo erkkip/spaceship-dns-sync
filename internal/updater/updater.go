@@ -15,7 +15,7 @@ import (
 type Updater struct {
 	logger    *slog.Logger
 	fetcher   *ipcheck.Fetcher
-	cache     *cache.FileCache
+	cache     *cache.MemoryCache
 	client    *spaceship.Client
 	pollEvery time.Duration
 	dryRun    bool
@@ -23,7 +23,7 @@ type Updater struct {
 	records []spaceship.DNSRecord
 }
 
-func New(logger *slog.Logger, fetcher *ipcheck.Fetcher, cache *cache.FileCache, client *spaceship.Client, pollEvery time.Duration, dryRun bool) *Updater {
+func New(logger *slog.Logger, fetcher *ipcheck.Fetcher, cache *cache.MemoryCache, client *spaceship.Client, pollEvery time.Duration, dryRun bool) *Updater {
 	return &Updater{
 		logger:    logger,
 		fetcher:   fetcher,

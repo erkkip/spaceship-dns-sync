@@ -11,7 +11,6 @@ SPACESHIP_API_KEY=your-key
 SPACESHIP_API_SECRET=your-secret
 SPACESHIP_BASE_URL=https://spaceship.dev/api/v1
 POLL_INTERVAL_HOURS=24
-CACHE_PATH=state/last_ip
 IP_ENDPOINTS=https://api.ipify.org,https://ifconfig.me
 DRY_RUN=false
 ```
@@ -19,7 +18,6 @@ DRY_RUN=false
 - `SPACESHIP_API_KEY` / `SPACESHIP_API_SECRET`: API credentials provided by Spaceship.
 - `SPACESHIP_BASE_URL`: Override if Spaceship exposes a different API root.
 - `POLL_INTERVAL_HOURS`: How often to re-check your external IP (defaults to 24h).
-- `CACHE_PATH`: File storing last known IP for change detection.
 - `IP_ENDPOINTS`: Optional comma-separated list of services to query for your public IP.
 - `DRY_RUN`: Set to `true` to log intended updates without performing them.
 
@@ -69,7 +67,6 @@ docker run -d \
   --name dnsupdater \
   --restart unless-stopped \
   --env-file .env \
-  -v $(pwd)/state:/app/state \
   dnsupdater:latest
 ```
 
@@ -97,9 +94,7 @@ For easier deployment, use the provided `docker-compose.example.yml`:
    docker-compose up -d
    ```
 
-The `state/` directory will be mounted as a volume to persist the last known IP address across container restarts.
-
-**Important**: The `state/` directory must exist on the host and be writable. The container runs as a non-root user (UID 1000) for security.
+The last known IP address is stored in memory and will be checked on startup. No volume mounts are required.
 
 ## Development
 

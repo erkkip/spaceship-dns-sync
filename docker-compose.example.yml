@@ -7,12 +7,6 @@ services:
     restart: unless-stopped
     env_file:
       - .env
-    environment:
-      # Override cache path to use mounted volume
-      - CACHE_PATH=/app/state/last_ip
-    volumes:
-      # Persist state directory to host
-      - ./state:/app/state
     # Optional: Add health check
     healthcheck:
       test: ["CMD", "pgrep", "-f", "dnsupdater"]

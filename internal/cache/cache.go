@@ -1,44 +1,37 @@
 package cache
 
 import (
-	"fmt"
 	"net"
-	"os"
-	"path/filepath"
-	"strings"
+	"sync"
 )
 
-// FileCache stores IP state on disk.
-type FileCache struct {
-	path string
+// MemoryCache stores IP state in memory.
+type MemoryCache struct {
+	mu  sync.RWMutex
+	ip  net.IP
 }
 
-func NewFileCache(path string) *FileCache {
-	return &FileCache{path: path}
+func NewMemoryCache() *MemoryCache {
+	return &MemoryCache{}
 }
 
-func (c *FileCache) Load() (net.IP, error) {
-	data, err := os.ReadFile(c.path)
-	if err != nil {
-		if os.IsNotExist(err) {
-			return nil, nil
-		}
-		return nil, err
-	}
-	raw := strings.TrimSpace(string(data))
-	if raw == "" {
+func (c *MemoryCache) Load() (net.IP, error) {
+	c.mu.RLock()
+	defer c.mu.RUnlock()
+	if c.ip == nil {
 		return nil, nil
 	}
-	ip := net.ParseIP(raw)
-	if ip == nil {
-		return nil, fmt.Errorf("invalid IP cached at %s", c.path)
-	}
+	// Return a copy to prevent external modification
+	ip := make(net.IP, len(c.ip))
+	copy(ip, c.ip)
 	return ip, nil
 }
 
-func (c *FileCache) Save(ip net.IP) error {
-	if err := os.MkdirAll(filepath.Dir(c.path), 0o755); err != nil {
-		return err
-	}
-	return os.WriteFile(c.path, []byte(ip.String()), 0o644)
+func (c *MemoryCache) Save(ip net.IP) error {
+	c.mu.Lock()
+	defer c.mu.Unlock()
+	// Store a copy to prevent external modification
+	c.ip = make(net.IP, len(ip))
+	copy(c.ip, ip)
+	return nil
 }

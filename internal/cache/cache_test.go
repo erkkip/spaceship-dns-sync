@@ -2,15 +2,11 @@ package cache
 
 import (
 	"net"
-	"os"
 	"testing"
 )
 
-func TestFileCache(t *testing.T) {
-	tmp := t.TempDir()
-	path := tmp + "/ip"
-
-	c := NewFileCache(path)
+func TestMemoryCache(t *testing.T) {
+	c := NewMemoryCache()
 
 	if ip, err := c.Load(); err != nil || ip != nil {
 		t.Fatalf("expected empty cache, got %v %v", ip, err)
@@ -19,10 +15,6 @@ func TestFileCache(t *testing.T) {
 	target := net.ParseIP("203.0.113.1")
 	if err := c.Save(target); err != nil {
 		t.Fatalf("save failed: %v", err)
-	}
-
-	if info, err := os.Stat(path); err != nil || info.Size() == 0 {
-		t.Fatalf("expected file written")
 	}
 
 	got, err := c.Load()

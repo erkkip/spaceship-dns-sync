@@ -40,7 +40,7 @@ func main() {
 
 	httpClient := &http.Client{}
 	fetcher := ipcheck.NewFetcher(httpClient, cfg.IPCheckEndpoints, mockIP)
-	cache := cache.NewFileCache(cfg.CachePath)
+	cache := cache.NewMemoryCache()
 	shipClient := spaceship.NewClient(cfg.BaseURL, cfg.APIKey, cfg.APISecret, httpClient)
 
 	up := updater.New(logger, fetcher, cache, shipClient, cfg.PollInterval, cfg.DryRun)
